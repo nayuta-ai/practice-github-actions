@@ -1,0 +1,29 @@
+name: Issue Title Check
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  check_title:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check issue title
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const title = context.payload.issue.title;
+          if (!title.startsWith("[CI/CD]") && !title.startsWith("[iOS]")) {
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Issueタイトルには[CI/CD]または[iOS]のプレフィックスが必要です。"
+            });
+            github.issues.update({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "closed"
+            });
+          }
