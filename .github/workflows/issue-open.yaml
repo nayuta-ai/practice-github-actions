@@ -37,7 +37,6 @@ jobs:
               repo: context.repo.repo,
               body: "Issue title ends with a period. Removing the period."
             });
-            return;
           }
 
           let data;
