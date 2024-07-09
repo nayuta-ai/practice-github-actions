@@ -54,5 +54,5 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: "You should add the correct prefix to the issue title. Allowed prefixes: ${prefix}."
+            body: `You should add the correct prefix to the issue title. Allowed prefixes: ${prefix}.`
           });
