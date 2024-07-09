@@ -29,6 +29,16 @@ jobs:
 
           const title = context.payload.issue.title;
           console.log(`Issue title: ${title}`);
+          if (title.endsWith('.')) {
+            console.log("Issue title ends with a period. Removing the period.");
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Issue title ends with a period. Removing the period."
+            });
+            return;
+          }
 
           let data;
           try {
