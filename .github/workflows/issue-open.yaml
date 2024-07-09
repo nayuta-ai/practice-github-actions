@@ -2,7 +2,7 @@ name: Issue Title Check
 
 on:
   issues:
-    types: [opened]
+    types: [opened, edited]
 
 jobs:
   check_title:
@@ -32,7 +32,7 @@ jobs:
 
           let data;
           try {
-            const fileContents = fs.readFileSync('hack/prefix.yml', 'utf8');
+            const fileContents = fs.readFileSync('hack/prefix.yaml', 'utf8');
             data = yaml.load(fileContents);
           } catch (e) {
             console.log(`Error reading or parsing config.yml: ${e.message}`);
