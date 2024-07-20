@@ -10,7 +10,7 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    - name: Check issue title
+    - name: Create duplicate issue
       uses: actions/github-script@v6
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
@@ -28,6 +28,8 @@ jobs:
             assignees: assignees,
           })
 
+          // Add a dispatch event to trigger the workflow
+          // for validating the new issue.
           await github.rest.repos.createDispatchEvent({
             owner: context.repo.owner,
             repo: context.repo.repo,

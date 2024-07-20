@@ -36,6 +36,8 @@ jobs:
           } else {
             issue_number = context.issue.number;
           }
+
+          console.log(`Issue number: ${issue_number}`);
           const issue = await github.rest.issues.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
