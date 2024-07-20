@@ -3,6 +3,8 @@ name: Issue Title Check
 on:
   issues:
     types: [opened, edited]
+  repository_dispatch:
+    types: [issue_created]
 
 jobs:
   check_title:
