@@ -29,11 +29,9 @@ jobs:
           const fs = require('fs');
           const yaml = require('js-yaml');
 
-          console.log(`Event: ${context.event_name}`);
+          console.log(`Event: ${github.event_name}`);
           console.log(`Issue number: ${context.issue.number}`);
-          console.log(`Issue number: ${context.payload.issue.title}`);
-          console.log(`Client payload: ${context.payload.client_payload.issue_number}`);
-          const issue_number = context.event_name === 'repository_dispatch' ? context.payload.client_payload.issue_number : context.issue.number;
+          const issue_number = context.issue.number;
 
           const issue = await github.rest.issues.get({
             owner: context.repo.owner,
