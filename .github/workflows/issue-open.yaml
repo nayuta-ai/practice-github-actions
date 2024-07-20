@@ -29,10 +29,13 @@ jobs:
           const fs = require('fs');
           const yaml = require('js-yaml');
 
-          console.log(`Received dispatch event with issue number: ${context.payload.client_payload.issue_number}`);
-          console.log(`Issue number: ${context.issue.number}`);
-          const issue_number = context.issue.number;
+          let issue_number;
 
+          if (context.payload.client_payload) {
+            issue_number = context.payload.client_payload.issue_number;
+          } else {
+            issue_number = context.issue.number;
+          }
           const issue = await github.rest.issues.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
