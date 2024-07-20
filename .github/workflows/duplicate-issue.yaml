@@ -28,6 +28,13 @@ jobs:
             assignees: assignees,
           })
 
+          await github.rest.issues.createComment({
+            issue_number: sourceIssue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: 'Duplicate issue created: ' + newIssue.data.number
+          })
+
           // Add a dispatch event to trigger the workflow
           // for validating the new issue.
           await github.rest.repos.createDispatchEvent({
