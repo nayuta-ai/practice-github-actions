@@ -22,6 +22,6 @@ jobs:
             repo: context.repo.repo,
             title: `${sourceIssue.title} Copy`,
             body: sourceIssue.body
-            assignees: sourceIssue.assignees
+            assignee: sourceIssue.assignees
             labels: sourceIssue.labels
           })
