@@ -32,7 +32,7 @@ jobs:
             issue_number: sourceIssue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: 'Duplicate issue created: ' + newIssue.data.number
+            body: 'Duplicate issue created: ' + newIssue.data.html_url
           })
 
           // Add a dispatch event to trigger the workflow
