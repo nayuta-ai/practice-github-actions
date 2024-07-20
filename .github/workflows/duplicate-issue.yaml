@@ -28,6 +28,8 @@ jobs:
             assignees: assignees,
           })
 
+          console.log(`New issue created: ${newIssue.data.number}`);
+          console.log(`New issue url: ${newIssue.number}`);
           await github.rest.repos.createDispatchEvent({
             owner: context.repo.owner,
             repo: context.repo.repo,
