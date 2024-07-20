@@ -33,6 +33,6 @@ jobs:
             repo: context.repo.repo,
             event_type: 'issue_created',
             client_payload: {
-              issue: newIssue,
+              issue_number: newIssue.data.number,
             },
           });

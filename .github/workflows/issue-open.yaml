@@ -28,14 +28,21 @@ jobs:
         script: |
           const fs = require('fs');
           const yaml = require('js-yaml');
-          const issue = context.event_name === 'repository_dispatch' ? context.payload.client_payload.issue : context.payload.issue;
 
-          const title = issue.title;
+          const issue_number = context.event_name === 'repository_dispatch' ? context.payload.client_payload.issue_number : context.issue.number;
+
+          const issue = await github.rest.issues.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: issue_number,
+          });
+
+          const title = issue.data.title;
           console.log(`Issue title: ${title}`);
           if (title.endsWith('.')) {
             console.log("Issue title ends with a period. Removing the period.");
             github.rest.issues.createComment({
-              issue_number: context.issue.number,
+              issue_number: issue_number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: "Issue title ends with a period. Removing the period."
@@ -63,7 +70,7 @@ jobs:
 
           console.log("Title does not match any allowed prefix. Creating a comment.");
           github.rest.issues.createComment({
-            issue_number: issue.number,
+            issue_number: issue_number,
             owner: context.repo.owner,
             repo: context.repo.repo,
             body: `You should add the correct prefix to the issue title. Allowed prefixes: ${prefix}.`
