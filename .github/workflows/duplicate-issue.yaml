@@ -1,0 +1,20 @@
+name: Duplicate Issue
+
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  check_duplicate:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Check issue title
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        if: github.event.comment.body == '/duplicate'
+        script: |
+          const sourceIssue = context.payload.issue;
+          console.log(`Issue title: ${sourceIssue.title}`);
