@@ -31,6 +31,8 @@ jobs:
 
           const issue_number = context.event_name === 'repository_dispatch' ? context.payload.client_payload.issue_number : context.issue.number;
 
+          console.log(`Issue number: ${issue_number}`);
+
           const issue = await github.rest.issues.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
