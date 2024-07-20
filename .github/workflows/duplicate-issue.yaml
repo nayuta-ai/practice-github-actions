@@ -17,11 +17,13 @@ jobs:
         if: github.event.comment.body == '/duplicate'
         script: |
           const sourceIssue = context.payload.issue;
+          const labels = sourceIssue.labels.map(label => label.name);
+          const assignees = sourceIssue.assignees.map(assignee => assignee.login);
           github.rest.issues.create({
             owner: context.repo.owner,
             repo: context.repo.repo,
             title: `${sourceIssue.title} Copy`,
             body: sourceIssue.body,
-            labels: sourceIssue.labels,
-            assignees: sourceIssue.assignees,
+            labels: labels,
+            assignees: assignees,
           })
