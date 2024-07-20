@@ -19,7 +19,7 @@ jobs:
           const sourceIssue = context.payload.issue;
           const labels = sourceIssue.labels.map(label => label.name);
           const assignees = sourceIssue.assignees.map(assignee => assignee.login);
-          github.rest.issues.create({
+          const newIssue = await github.rest.issues.create({
             owner: context.repo.owner,
             repo: context.repo.repo,
             title: `${sourceIssue.title} Copy`,
@@ -27,3 +27,12 @@ jobs:
             labels: labels,
             assignees: assignees,
           })
+
+          await github.rest.repos.createDispatchEvent({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            event_type: 'issue_created',
+            client_payload: {
+              issue_number: newIssue.data.number,
+            },
+          });
