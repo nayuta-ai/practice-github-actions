@@ -16,7 +16,11 @@ jobs:
         github-token: ${{secrets.GITHUB_TOKEN}}
         if: github.event.comment.body == '/duplicate'
         script: |
-          const sourceIssue = context.payload.issue;
+          const { data: sourceIssue } = await github.rest.issues.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
           const labels = sourceIssue.labels.map(label => label.name);
           const assignees = sourceIssue.assignees.map(assignee => assignee.login);
 
