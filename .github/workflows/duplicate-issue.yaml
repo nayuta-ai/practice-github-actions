@@ -17,4 +17,9 @@ jobs:
         if: github.event.comment.body == '/duplicate'
         script: |
           const sourceIssue = context.payload.issue;
-          console.log(`Issue title: ${sourceIssue.title}`);
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `${sourceIssue.title} Copy`,
+            body: sourceIssue.body
+          })
