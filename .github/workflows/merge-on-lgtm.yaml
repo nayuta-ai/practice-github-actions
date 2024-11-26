@@ -1,0 +1,47 @@
+name: Auto Approve and Merge
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  track-approval:
+    if: github.event_name == 'pull_request_review' && github.event.review.state == 'approved'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set PR approved status
+        uses: actions-ecosystem/action-set-labels@v1
+        with:
+          labels: approved
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  add-approved-label-on-command:
+    if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '/approved')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add "approved" label when /approved command is used
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: approved
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # merge-on-lgtm:
+  #   if: github.event_name == 'issue_comment' && contains(github.event.comment.body, 'lgtm')
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check if PR is approved
+  #       run: |
+  #         curl -s \
+  #         -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+  #         -H "Accept: application/vnd.github.v3+json" \
+  #         "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.issue.number }}" \
+  #         | jq '.labels | map(select(.name == "approved")) | length > 0' > is_approved.json
+  #     - name: Merge PR if approved
+  #       if: ${{ fromJSON('is_approved.json') }}
+  #       run: |
+  #         gh pr merge ${{ github.event.issue.number }} --merge --admin --repo ${{ github.repository }}
+  #       env:
+  #         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
