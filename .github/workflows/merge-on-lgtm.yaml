@@ -30,7 +30,6 @@ jobs:
   merge-on-lgtm:
     if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '/lgtm')
     runs-on: ubuntu-latest
-    needs: [track-approval, add-approved-label-on-command]
     steps:
       - name: Check if PR is approved
         run: |
