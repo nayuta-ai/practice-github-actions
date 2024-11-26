@@ -5,6 +5,17 @@ on:
     types: [created, edited]
 
 jobs:
+  add-approved-label-on-command:
+    if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '/approved')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add "approved" label when /approved command is used
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: approved
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   check_duplicate:
     runs-on: ubuntu-latest
     if: github.event.comment.body == '/duplicate'
