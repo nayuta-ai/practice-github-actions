@@ -1,0 +1,37 @@
+name: Assign
+
+on:
+  issues:
+    types:
+      - opened
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  assign-pr:
+    name: Assign
+    if: endsWith(github.actor, '[bot]') == false && github.event.pull_request.assignee == null
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      repository-projects: read
+    steps:
+      - name: Add event actor to assignees
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh pr edit ${{ github.event.number }} --add-assignee ${{ github.actor }}
+  assign-issue:
+    name: Assign
+    if: endsWith(github.actor, '[bot]') == false && github.event.issue.assignee == null
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      repository-projects: read
+    steps:
+      - name: Add event actor to assignees
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh issue edit ${{ github.event.number }} --add-assignee ${{ github.actor }}
